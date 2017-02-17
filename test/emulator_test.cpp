@@ -5,8 +5,9 @@
 
 class TestEmulator : public Emulator {
 public:
-    TestEmulator() : Emulator() {
+    TestEmulator() : Emulator(1024) {
         assert(registers.size() > 0);
+        assert(memorySize == 1024);
     }
 
     void testAddRegister() {
