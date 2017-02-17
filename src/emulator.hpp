@@ -52,7 +52,7 @@ struct Register {
 
 
 class Emulator {
-private:
+protected:
     map<string, Register*> registers;
 
     void addRegister(const string& name, int size);
