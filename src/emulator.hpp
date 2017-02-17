@@ -2,7 +2,7 @@
 #define __EMULATOR__
 
 #include <cstdint>
-#include <map>
+#include <vector>
 #include <utility>
 #include "register.hpp"
 
@@ -15,7 +15,7 @@ private:
     void populateRegisters();
 
 protected:
-    map<string, Register*> registers;
+    vector<Register*> registers;
     uint8_t* memory;
     unsigned memorySize;
 
@@ -25,6 +25,8 @@ public:
     Emulator();
     Emulator(const unsigned memorySize);
     ~Emulator();
+
+    void MoveMemToReg();
 
     string getRegisters() const;
 };

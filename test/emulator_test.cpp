@@ -14,9 +14,7 @@ public:
         unsigned oldSize = registers.size();
         addRegister("A", 2);
         assert(registers.size() == oldSize + 1);
-        auto regPair = registers.find("A");
-        assert(regPair != registers.end());
-        auto reg = regPair->second;
+        auto reg = registers.back();
         assert(reg->size == 2);
         assert(reg->name == "A");
     }

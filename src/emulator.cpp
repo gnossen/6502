@@ -11,7 +11,7 @@ Emulator::Emulator(const unsigned _memorySize) {
 
 Emulator::~Emulator() {
     for (auto it = registers.begin(); it != registers.end(); it++) {
-        delete it->second;
+        delete *it;
     }
 }
 
@@ -26,13 +26,13 @@ void Emulator::populateRegisters() {
 
 void Emulator::addRegister(const string& name, const int size) {
     auto reg = new Register(name, size);
-    registers.insert(make_pair(name, reg));
+    registers.push_back(reg);
 }
 
 string Emulator::getRegisters() const {
     ostringstream os;
     for (auto it = registers.begin(); it != registers.end(); it++) {
-        os << (string) *(it->second) << std::endl;
+        os << (string) **it << std::endl;
     }
     return os.str();
 }
