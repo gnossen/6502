@@ -1,4 +1,4 @@
-bin/emulator: src/emulator_main.cpp src/emulator.cpp src/emulator.hpp
+bin/emulator: src/emulator_main.cpp src/emulator.cpp src/emulator.hpp src/register.hpp
 	mkdir -p bin
 	g++ -std=c++14 -Wall src/emulator_main.cpp src/emulator.cpp -o bin/emulator
 
@@ -8,7 +8,7 @@ test: register_test emulator_test
 register_test: bin/test/register_test
 	./bin/test/register_test
 
-bin/test/register_test: src/emulator.hpp src/emulator.cpp test/register_test.cpp
+bin/test/register_test: src/register.hpp test/register_test.cpp
 	mkdir -p bin/test
 	g++ -std=c++14 -Wall -I src/ test/register_test.cpp src/emulator.cpp -o bin/test/register_test
 
