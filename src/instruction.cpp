@@ -16,3 +16,11 @@ void MoveRegToMemInstruction::execute(Emulator* emu) const {
 void MoveMemToRegInstruction::execute(Emulator* emu) const {
     getRegister(emu, regIndex)->write((void*) getMemory(emu, memAddress));
 }
+
+void LoadRegisterInstruction::execute(Emulator* emu) const {
+    getRegister(emu, regIndex)->write((void*) &value);
+}
+
+void SetFlagInstruction::execute(Emulator* emu) const {
+    getRegister(emu, regIndex)->value[0] |= 1 << flagIndex;
+}

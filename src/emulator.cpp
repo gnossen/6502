@@ -28,6 +28,10 @@ void Emulator::addRegister(const string& name, const int size) {
     registers.push_back(reg);
 }
 
+void Emulator::execute(Instruction* inst) {
+    inst->execute(this);
+}
+
 void Emulator::zero() {
     zeroRegisters();
     zeroMemory();

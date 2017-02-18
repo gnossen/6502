@@ -71,9 +71,21 @@ public:
         value = _value;
     }
 
-    virtual void execute(Emulator* emu) const {
-        getRegister(emu, regIndex)->write((void*) &value);
+    void execute(Emulator* emu) const;
+};
+
+class SetFlagInstruction : public Instruction {
+protected:
+    size_t regIndex;
+    size_t flagIndex;
+
+public:
+    SetFlagInstruction(size_t _regIndex, size_t _flagIndex) {
+        regIndex = _regIndex; 
+        flagIndex = _flagIndex;
     }
+
+    void execute(Emulator* emu) const;
 };
 
 #endif

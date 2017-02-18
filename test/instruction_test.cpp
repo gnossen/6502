@@ -71,10 +71,24 @@ void testLoadRegisterInstruction() {
     assert(emu.getDoubleReg(1) == 355);
 }
 
+void testSetFlagInstruction() {
+    auto emu = TestEmulator();
+    assert(emu.getReg(0) == 0);
+    
+    auto inst = SetFlagInstruction(0, 0);
+    inst.execute(&emu);
+    assert(emu.getReg(0) == 1);
+
+    auto inst2 = SetFlagInstruction(0, 1);
+    inst2.execute(&emu);
+    assert(emu.getReg(0) == 3);
+}
+
 
 int main(int argc, char** argv) {
     testMoveRegToMemInstruction();
     testMoveMemToRegInstruction();
     testLoadRegisterInstruction();
+    testSetFlagInstruction();
     return 0;
 }

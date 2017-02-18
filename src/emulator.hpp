@@ -11,6 +11,8 @@
 
 using namespace std;
 
+class Instruction;
+
 const int DefaultMemorySize = 65536;
 
 class Emulator {
@@ -31,6 +33,7 @@ public:
     Emulator(const unsigned memorySize);
     ~Emulator();
 
+    void execute(Instruction* inst);
     void zero();
 
     string getRegisters() const;
