@@ -30,10 +30,6 @@ public:
     Emulator(const unsigned memorySize);
     ~Emulator();
 
-    void moveMemToReg(uint32_t addr, size_t regIndex);
-    void moveRegToMem(size_t regIndex, uint32_t addr);
-    void modifyReg(size_t regIndex, void (*op) (Register*));
-
     void zero();
 
     string getRegisters() const;

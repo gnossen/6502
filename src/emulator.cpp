@@ -28,18 +28,6 @@ void Emulator::addRegister(const string& name, const int size) {
     registers.push_back(reg);
 }
 
-void Emulator::moveMemToReg(uint32_t addr, size_t regIndex) {
-    registers[regIndex]->write((void*) &memory[addr]);
-}
-
-void Emulator::moveRegToMem(size_t regIndex, uint32_t addr) {
-    registers[regIndex]->read((void*) &memory[addr]);
-}
-
-void Emulator::modifyReg(size_t regIndex, void (*op) (Register*)) {
-    op(registers[regIndex]);
-}
-
 void Emulator::zero() {
     zeroRegisters();
     zeroMemory();

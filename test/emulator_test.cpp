@@ -9,7 +9,7 @@ void setLowBit(Register* reg) {
 
 class TestEmulator : public Emulator {
 public:
-    TestEmulator() : Emulator(246) {
+    TestEmulator() : Emulator(256) {
         assert(registers.size() > 0);
         assert(memorySize == 256);
     }
@@ -37,42 +37,11 @@ public:
         }
     }
 
-    void testMoveMemToReg() {
-        zero();
-        uint16_t val = 0;
-        memory[0] = 25;
-        assert(val == 0);
-        moveMemToReg(0, 0);
-        registers[0]->read(&val);
-        assert(val == 25);
-    }
-
-    void testMoveRegToMem() {
-        zero();
-        uint16_t val = 25;
-        registers[0]->write(&val);
-        assert(memory[0] == 0);
-        moveRegToMem(0, 0);
-        assert(memory[0] == 25);
-    }
-
-    void testModifyReg() {
-        zero();
-        modifyReg(0, setLowBit);
-        assert(registers[0]->value[0] == 1);
-    }
-
-    void testOperations() {
-        testMoveMemToReg();
-        testMoveRegToMem();
-        testModifyReg();
-    }
 };
 
 int main(int argc, char** argv) {
     auto emu = TestEmulator();
     emu.testAddRegister();
     emu.testZero();
-    emu.testOperations();
     return 0;
 }
