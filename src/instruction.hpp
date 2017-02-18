@@ -45,61 +45,35 @@ public:
     void execute(Emulator* emu) const;
 };
 
-// template <>
-// using byte_t<1> = uint8_t;
-// 
-// template <>
-// using byte_t<2> = uint16_t;
-// 
-// template <>
-// using byte_t<4> = uint32_t;
-// 
-// template <>
-// using byte_t<8> = uint64_t;
-// 
-// class LoadRegisterInstruction : public Instruction {
-// protected:
-//     size_t regIndex;
-// 
-// public:
-//     virtual void execute(Emulator* emu) const = 0;
-// };
-// 
-// template <int N>
-// class LoadRegister : public LoadRegisterInstruction {
-// protected:
-//     byte_t<N> value;
-// 
-// public:
-//     LoadRegister(size_t _regIndex, byte_t<N> value) {
-//         regIndex = _regIndex;
-//         value = _value;
-//     }
-// 
-//     void execute(Emulator* emu) const {
-// 
-// class LoadRegisterInstruction : public Instruction {
-// protected:
-//     size_t regIndex;
-// 
-// public:
-//     virtual void execute(Emulator* emu) const = 0;
-// };
-// 
-// template <int N>
-// class LoadRegister : public LoadRegisterInstruction {
-// protected:
-//     byte_t<N> value;
-// 
-// public:
-//     LoadRegister(size_t _regIndex, byte_t<N> value) {
-//         regIndex = _regIndex;
-//         value = _value;
-//     }
-// 
-//     void execute(Emulator* emu) const {
-//         emu->registers[regIndex]->write((void*) &value);
-//     }
-// };
+class LoadRegisterInstruction : public Instruction {
+protected:
+    size_t regIndex;
+    uint64_t value;
+
+public:
+    LoadRegisterInstruction(size_t _regIndex, uint8_t _value) {
+        regIndex = _regIndex;
+        value = (uint64_t)_value;
+    }
+
+    LoadRegisterInstruction(size_t _regIndex, uint16_t _value) {
+        regIndex = _regIndex;
+        value = (uint64_t)_value;
+    }
+
+    LoadRegisterInstruction(size_t _regIndex, uint32_t _value) {
+        regIndex = _regIndex;
+        value = (uint64_t)_value;
+    }
+
+    LoadRegisterInstruction(size_t _regIndex, uint64_t _value) {
+        regIndex = _regIndex;
+        value = _value;
+    }
+
+    virtual void execute(Emulator* emu) const {
+        getRegister(emu, regIndex)->write((void*) &value);
+    }
+};
 
 #endif

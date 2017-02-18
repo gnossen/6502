@@ -9,6 +9,7 @@ class TestEmulator : public Emulator {
     public:
         TestEmulator() : Emulator(256) {
             addRegister("A", 1); 
+            addRegister("B", 2);
         }
 
         void setMem(uint32_t address, uint8_t value) {
@@ -25,6 +26,12 @@ class TestEmulator : public Emulator {
 
         uint8_t getReg(size_t regIndex) const {
             uint8_t val = 0;
+            registers[regIndex]->read(&val);
+            return val;
+        }
+
+        uint16_t getDoubleReg(size_t regIndex) const {
+            uint16_t val = 0;
             registers[regIndex]->read(&val);
             return val;
         }
@@ -51,8 +58,23 @@ void testMoveMemToRegInstruction() {
     assert(emu.getReg(0) == 7);
 }
 
+void testLoadRegisterInstruction() {
+    auto emu = TestEmulator();
+    assert(emu.getReg(0) == 0);
+
+    auto inst = LoadRegisterInstruction(0, (uint8_t)7);
+    inst.execute(&emu);
+    assert(emu.getReg(0) == 7);
+
+    auto inst2 = LoadRegisterInstruction(1, (uint16_t)355);
+    inst2.execute(&emu);
+    assert(emu.getDoubleReg(1) == 355);
+}
+
+
 int main(int argc, char** argv) {
     testMoveRegToMemInstruction();
     testMoveMemToRegInstruction();
+    testLoadRegisterInstruction();
     return 0;
 }
