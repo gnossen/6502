@@ -3,10 +3,6 @@
 #include <cstdint>
 #include <cassert>
 
-void setLowBit(Register* reg) {
-
-}
-
 void testRead() {
     auto pc = new Register("PC", 2);
     uint16_t val;

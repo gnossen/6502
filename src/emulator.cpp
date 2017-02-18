@@ -55,6 +55,10 @@ void Emulator::zeroMemory() {
     memset((void*) memory, 0, memorySize);
 }
 
+void Emulator::execute(Instruction* inst) {
+    inst->execute(this);
+}
+
 string Emulator::getRegisters() const {
     ostringstream os;
     for (auto it = registers.begin(); it != registers.end(); it++) {

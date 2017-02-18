@@ -7,12 +7,14 @@
 #include <algorithm>
 #include <cstring>
 #include "register.hpp"
+#include "i_emulator.hpp"
+#include "instruction.hpp"
 
 using namespace std;
 
 const int DefaultMemorySize = 65536;
 
-class Emulator {
+class Emulator : public IEmulator {
 private:
     void populateRegisters();
 
@@ -35,6 +37,8 @@ public:
     void modifyReg(size_t regIndex, void (*op) (Register*));
 
     void zero();
+
+    void execute(Instruction* inst);
 
     string getRegisters() const;
 };
