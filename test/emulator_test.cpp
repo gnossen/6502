@@ -1,16 +1,13 @@
 #include "emulator.hpp"
+#include "instruction.hpp"
 #include <iostream>
 #include <cstdint>
 #include <cassert>
 
-void setLowBit(Register* reg) {
-    reg->value[0] |= 1;
-}
-
 class TestEmulator : public Emulator {
 public:
     TestEmulator() : Emulator(256) {
-        assert(registers.size() > 0);
+        assert(registers.size() == 0);
         assert(memorySize == 256);
     }
 

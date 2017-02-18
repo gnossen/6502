@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cstring>
 #include "register.hpp"
+#include "instruction.hpp"
 
 using namespace std;
 
@@ -33,6 +34,8 @@ public:
     void zero();
 
     string getRegisters() const;
+
+    friend class Instruction;
 };
 
 #endif

@@ -15,12 +15,12 @@ Emulator::~Emulator() {
 }
 
 void Emulator::populateRegisters() {
-    addRegister("PC", 2);
-    addRegister("SP", 1);
-    addRegister("ACC", 1);
-    addRegister("X", 1);
-    addRegister("Y", 1);
-    addRegister("STATUS", 1);
+    // addRegister("PC", 2);
+    // addRegister("SP", 1);
+    // addRegister("ACC", 1);
+    // addRegister("X", 1);
+    // addRegister("Y", 1);
+    // addRegister("STATUS", 1);
 }
 
 void Emulator::addRegister(const string& name, const int size) {
