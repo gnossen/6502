@@ -1,6 +1,5 @@
 #include "emulator.hpp"
 
-
 Emulator::Emulator() : Emulator(DefaultMemorySize) {}
 
 Emulator::Emulator(const unsigned _memorySize) {
@@ -27,6 +26,33 @@ void Emulator::populateRegisters() {
 void Emulator::addRegister(const string& name, const int size) {
     auto reg = new Register(name, size);
     registers.push_back(reg);
+}
+
+void Emulator::moveMemToReg(uint32_t addr, size_t regIndex) {
+    registers[regIndex]->read((void*) &memory[addr]);
+}
+
+void Emulator::moveRegToMem(size_t regIndex, uint32_t addr) {
+    registers[regIndex]->write((void*) &memory[addr]);
+}
+
+void Emulator::modifyReg(size_t regIndex, void (*op) (Register*)) {
+    op(registers[regIndex]);
+}
+
+void Emulator::zero() {
+    zeroRegisters();
+    zeroMemory();
+}
+
+void Emulator::zeroRegisters() {
+    for_each(registers.begin(), registers.end(), [](Register* reg) {
+        reg->zero();        
+    });
+}
+
+void Emulator::zeroMemory() {
+    memset((void*) memory, 0, memorySize);
 }
 
 string Emulator::getRegisters() const {

@@ -4,6 +4,8 @@
 #include <cstdint>
 #include <vector>
 #include <utility>
+#include <algorithm>
+#include <cstring>
 #include "register.hpp"
 
 using namespace std;
@@ -20,13 +22,19 @@ protected:
     unsigned memorySize;
 
     void addRegister(const string& name, int size);
+    void zeroRegisters();
+    void zeroMemory();
 
 public:
     Emulator();
     Emulator(const unsigned memorySize);
     ~Emulator();
 
-    void MoveMemToReg();
+    void moveMemToReg(uint32_t addr, size_t regIndex);
+    void moveRegToMem(size_t regIndex, uint32_t addr);
+    void modifyReg(size_t regIndex, void (*op) (Register*));
+
+    void zero();
 
     string getRegisters() const;
 };

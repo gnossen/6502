@@ -18,10 +18,30 @@ public:
         assert(reg->size == 2);
         assert(reg->name == "A");
     }
+
+    void testZero() {
+        zero();
+        uint8_t* p = memory;
+        for (size_t i = 0; i < memorySize; ++i) {
+            assert(*p == 0);
+            ++p;
+        }
+        uint64_t val = 0;
+        for (auto reg = registers.begin(); reg != registers.end(); ++reg) {
+            (*reg)->read(&val);
+            assert(val == 0);
+        }
+    }
+
+    void testOperations() {
+        
+    }
 };
 
 int main(int argc, char** argv) {
     auto emu = TestEmulator();
     emu.testAddRegister();
+    emu.testZero();
+    emu.testOperations();
     return 0;
 }
