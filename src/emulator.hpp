@@ -20,8 +20,6 @@ private:
     void populateRegisters();
 
 protected:
-    vector<Register*> registers;
-    uint8_t* memory;
     unsigned memorySize;
 
     void addRegister(const string& name, int size);
@@ -29,6 +27,9 @@ protected:
     void zeroMemory();
 
 public:
+    vector<Register*> registers;
+    uint8_t* memory;
+
     Emulator();
     Emulator(const unsigned memorySize);
     ~Emulator();

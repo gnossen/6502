@@ -3,19 +3,23 @@
 
 #include <cstdint>
 #include <cstdio>
+#include <string>
 #include "emulator.hpp"
 #include "register.hpp"
 
 class Emulator;
 
+using namespace std;
+
 class Instruction {
 public:
     virtual void execute(Emulator* emu) const = 0;
+    virtual string toString() const = 0;
+    virtual uint8_t* toBytes() const = 0;
+    virtual size_t byteLen() const = 0;
+}; 
 
-protected:
-    Register* getRegister(Emulator* emu, size_t regIndex) const;
-    uint8_t* getMemory(Emulator* emu, uint32_t memAddress) const;
-};
+class Address
 
 class MoveRegToMemInstruction : public Instruction {
 protected:
