@@ -1,11 +1,13 @@
 #include "emulator.hpp"
+#include <iostream>
 
 Emulator::Emulator() : Emulator(DefaultMemorySize) {}
 
 Emulator::Emulator(const unsigned _memorySize) {
-    populateRegisters();
     memorySize = _memorySize;
     memory = new uint8_t[memorySize];
+    populateRegisters();
+    zero();
 }
 
 Emulator::~Emulator() {
@@ -15,21 +17,17 @@ Emulator::~Emulator() {
 }
 
 void Emulator::populateRegisters() {
-    // addRegister("PC", 2);
-    // addRegister("SP", 1);
-    // addRegister("ACC", 1);
-    // addRegister("X", 1);
-    // addRegister("Y", 1);
-    // addRegister("STATUS", 1);
+    addRegister("PC", 2);
+    addRegister("SP", 1);
+    addRegister("ACC", 1);
+    addRegister("X", 1);
+    addRegister("Y", 1);
+    addRegister("STATUS", 1);
 }
 
 void Emulator::addRegister(const string& name, const int size) {
     auto reg = new Register(name, size);
     registers.push_back(reg);
-}
-
-void Emulator::execute(Instruction* inst) {
-    inst->execute(this);
 }
 
 void Emulator::zero() {

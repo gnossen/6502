@@ -1,95 +1,100 @@
-#ifndef __INSTRUCTION__
-#define __INSTRUCTION__
-
-#include <cstdint>
-#include <cstdio>
-#include <string>
 #include "emulator.hpp"
-#include "register.hpp"
 
-class Emulator;
+typedef void (*ExecPointer)(Emulator*, uint8_t*);
 
-using namespace std;
+ExecPointer JumpTable[256];
 
-class Instruction {
-public:
+typedef enum Register6502 {
+    ProgramCounter = (size_t) 0,
+    StackPointer = (size_t) 1,
+    Accumulator = (size_t) 2,
+    RegisterX = (size_t) 3,
+    RegisterY = (size_t) 4,
+    StatusRegister = (size_t) 5
+} Register6502;
+
+typedef enum AddressingMode {
+    IndexedIndirect,
+    ZeroPage,
+    Immediate,
+    AccumulatorMode,
+    IndirectIndexed,
+    ZeroPageX,
+    AbsoluteY,
+    AbsoluteX,
+    ZeroPageY,
+    Relative,
+    Absolute,
+    Indirect
+} AddressingMode;
+
+struct Instruction {
     virtual void execute(Emulator* emu) const = 0;
     virtual string toString() const = 0;
     virtual uint8_t* toBytes() const = 0;
     virtual size_t byteLen() const = 0;
 }; 
 
-class Address
+struct Instruction6502 : public Instruction {
+    virtual void execute(Emulator* emu) const = 0;
+    virtual string toString() const = 0;
+    virtual uint8_t* toBytes() const = 0;
+    virtual size_t byteLen() const = 0;
 
-class MoveRegToMemInstruction : public Instruction {
-protected:
-    size_t regIndex;
-    uint32_t memAddress;
-
-public:
-    MoveRegToMemInstruction(size_t _regIndex, uint32_t _memAddress) {
-        regIndex = _regIndex;
-        memAddress = _memAddress;
+    static void ex(Emulator* emu) {
+        uint8_t* pc = emu->registers[ProgramCounter]->value;
+        JumpTable[*pc](emu, pc + 1);
     }
-
-    void execute(Emulator* emu) const;
 };
 
-class MoveMemToRegInstruction : public Instruction {
-protected:
-    uint32_t memAddress;
-    size_t regIndex;
+typedef enum InstructionType {
+    AndInstruction    
+} InstructionType;
 
-public:
-    MoveMemToRegInstruction(uint32_t _memAddress, size_t _regIndex) {
-        memAddress = _memAddress;
-        regIndex = _regIndex;
+template<typename InstKernel, typename ArgType, int AddressingMode, uint8_t OpCode>
+struct Instruction6502X : public Instruction6502 {
+    ArgType* arg;
+    static const size_t argByteLen;
+
+    static const uint8_t opCode = OpCode;
+    static const string instName;
+
+    static constexpr size_t byteLength = 1 + sizeof(ArgType);
+
+    string toString() const {
+        return "NOP";
     }
 
-    void execute(Emulator* emu) const;
+    uint8_t* toBytes() const {
+        return NULL;
+    }
+
+    size_t byteLen() const {
+        return byteLength;
+    }
+
+    static uint8_t* evalAddress(Emulator* emu, ArgType* _arg) {
+        // default immediate mode
+        return (uint8_t*) _arg;
+    }
+
+    static void executeStatic(Emulator* emu, uint8_t* _arg) {
+        InstKernel::exec(emu, evalAddress(emu, _arg));        
+    }
+
+    virtual void execute(Emulator* emu) const {
+        executeStatic(emu, this->arg);
+    }
 };
 
-class LoadRegisterInstruction : public Instruction {
-protected:
-    size_t regIndex;
-    uint64_t value;
 
-public:
-    LoadRegisterInstruction(size_t _regIndex, uint8_t _value) {
-        regIndex = _regIndex;
-        value = (uint64_t)_value;
+struct AndInstKernel {
+    static void exec(Emulator* emu, uint8_t* arg) {
+        *emu->registers[Accumulator]->value &= *arg;
     }
-
-    LoadRegisterInstruction(size_t _regIndex, uint16_t _value) {
-        regIndex = _regIndex;
-        value = (uint64_t)_value;
-    }
-
-    LoadRegisterInstruction(size_t _regIndex, uint32_t _value) {
-        regIndex = _regIndex;
-        value = (uint64_t)_value;
-    }
-
-    LoadRegisterInstruction(size_t _regIndex, uint64_t _value) {
-        regIndex = _regIndex;
-        value = _value;
-    }
-
-    void execute(Emulator* emu) const;
 };
 
-class SetFlagInstruction : public Instruction {
-protected:
-    size_t regIndex;
-    size_t flagIndex;
-
-public:
-    SetFlagInstruction(size_t _regIndex, size_t _flagIndex) {
-        regIndex = _regIndex; 
-        flagIndex = _flagIndex;
-    }
-
-    void execute(Emulator* emu) const;
-};
-
-#endif
+void init_jumptable() {
+    JumpTable[0x29] = &Instruction6502X<AndInstKernel, uint8_t, Immediate, 0x29>::executeStatic;
+    JumpTable[0x2D] = &Instruction6502X<AndInstKernel, uint8_t, Absolute, 0x2D>::executeStatic;
+}

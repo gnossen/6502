@@ -7,11 +7,8 @@
 #include <algorithm>
 #include <cstring>
 #include "register.hpp"
-#include "instruction.hpp"
 
 using namespace std;
-
-class Instruction;
 
 const int DefaultMemorySize = 65536;
 
@@ -34,12 +31,9 @@ public:
     Emulator(const unsigned memorySize);
     ~Emulator();
 
-    void execute(Instruction* inst);
     void zero();
 
     string getRegisters() const;
-
-    friend class Instruction;
 };
 
 #endif
