@@ -24,7 +24,7 @@ bin/test/emulator_test: src/emulator.hpp src/emulator.cpp src/instruction.cpp te
 instruction_test: bin/test/instruction_test
 	./bin/test/instruction_test
 
-bin/test/instruction_test: src/emulator.hpp src/emulator.cpp src/register.hpp src/instruction.cpp src/instruction.hpp test/instruction_test.cpp
+bin/test/instruction_test: src/emulator.hpp src/emulator.cpp src/register.hpp src/instruction.cpp src/instruction.hpp src/emulator6502.hpp test/instruction_test.cpp
 	mkdir -p bin/test
 	g++ -std=c++14 -Wall -I src/ test/instruction_test.cpp src/emulator.cpp src/instruction.cpp -o bin/test/instruction_test
 

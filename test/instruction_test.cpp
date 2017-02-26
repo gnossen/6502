@@ -1,4 +1,4 @@
-#include "emulator.hpp"
+#include "emulator6502.hpp"
 #include "instruction.hpp"
 #include <cassert>
 
@@ -14,7 +14,7 @@ void executeInst(Emulator* emu, Register6502 reg, uint8_t opCode, uint8_t initVa
 }
 
 void testAnd() {
-    Emulator emu(512); 
+    Emulator6502 emu(512); 
     executeInst(&emu, Accumulator, 0x29, 9, 7, 1);
     emu.zero();
     emu.memory[4] = 7;

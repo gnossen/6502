@@ -4,15 +4,6 @@ typedef void (*ExecPointer)(Emulator*, uint8_t*);
 
 ExecPointer JumpTable[256];
 
-typedef enum Register6502 {
-    ProgramCounter = (size_t) 0,
-    StackPointer = (size_t) 1,
-    Accumulator = (size_t) 2,
-    RegisterX = (size_t) 3,
-    RegisterY = (size_t) 4,
-    StatusRegister = (size_t) 5
-} Register6502;
-
 typedef enum AddressingMode {
     IndexedIndirect,
     ZeroPage,
@@ -80,6 +71,7 @@ struct Instruction6502X : public Instruction6502 {
 
     static void executeStatic(Emulator* emu, uint8_t* _arg) {
         InstKernel::exec(emu, evalAddress(emu, _arg));        
+        *emu->registers[ProgramCounter]->value += byteLength;
     }
 
     virtual void execute(Emulator* emu) const {

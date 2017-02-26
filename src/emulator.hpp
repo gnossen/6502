@@ -14,7 +14,6 @@ const int DefaultMemorySize = 65536;
 
 class Emulator {
 private:
-    void populateRegisters();
 
 protected:
     unsigned memorySize;
@@ -22,6 +21,7 @@ protected:
     void addRegister(const string& name, int size);
     void zeroRegisters();
     void zeroMemory();
+    virtual void populateRegisters();
 
 public:
     vector<Register*> registers;

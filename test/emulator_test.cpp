@@ -1,5 +1,4 @@
 #include "emulator.hpp"
-#include "instruction.hpp"
 #include <iostream>
 #include <cstdint>
 #include <cassert>
